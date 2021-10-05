@@ -1,14 +1,15 @@
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
 
 public class DesafioCadastro{
 	
 	private WebDriver driver;
+	private DSL dsl;
+	private CampoTreinamentoPage page;
 	
 	@Before
 	public void inicia() {
@@ -16,34 +17,30 @@ public class DesafioCadastro{
 	driver = new ChromeDriver();
 	driver.manage().window().maximize();
 	driver.get("file:\\" + System.getProperty("user.dir") + "\\src\\main\\resources\\componentes.html");
+	dsl = new DSL(driver);
+	page = new CampoTreinamentoPage(driver);
 	}
 	
-	@Test
+	@After
 	public void encerra() {
 		driver.quit();
 	}
-	public void DesafioCadastroCompleto() {
-		driver.findElement(By.id("elementosForm:nome")).sendKeys("Marcondes");
-		driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Santos");
-		driver.findElement(By.id("elementosForm:sexo:0")).click();
-		driver.findElement(By.id("elementosForm:comidaFavorita:2")).click();
-		new Select(driver.findElement(By.id("elementosForm:escolaridade"))).selectByVisibleText("Superior");
-		//WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
-		//Select combo = new Select(element);
-		//combo.selectByValue("superior");
-		new Select(driver.findElement(By.id("elementosForm:esportes"))).selectByVisibleText("Futebol");
-		//WebElement elemento = driver.findElement(By.id("elementosForm:esportes"));
-		//Select combo2 = new Select(elemento);
-		//combo2.selectByValue("futebol");
-		driver.findElement(By.id("elementosForm:cadastrar")).click();
-		Assert.assertTrue(driver.findElement(By.id("resultado")).getText().startsWith("Cadastrado!"));
-		Assert.assertTrue(driver.findElement(By.id("descNome")).getText().endsWith("Marcondes"));
-		Assert.assertEquals("Sobrenome: Santos", driver.findElement(By.id("descSobrenome")).getText());
-		Assert.assertEquals("Sexo: Masculino", driver.findElement(By.id("descSexo")).getText());
-		Assert.assertEquals("Comida: Pizza", driver.findElement(By.id("descComida")).getText());
-		Assert.assertEquals("Escolaridade: superior", driver.findElement(By.id("descEscolaridade")).getText());
-		Assert.assertEquals("Esportes: Futebol", driver.findElement(By.id("descEsportes")).getText());
-		Assert.assertEquals("Sugestoes:", driver.findElement(By.id("descSugestoes")).getText());
-	}
 	
+	@Test
+	public void DesafioCadastroCompleto() {
+		page.setNome("Marcondes");
+		page.setSobrenome("Santos");
+		page.setSexoMasculino();
+		page.setPizza();
+		page.setEscolaridade("Superior");
+		page.setEsporte("Futebol");
+		page.cadastrar();
+		Assert.assertTrue(page.obterResultadoCadastro().startsWith("Cadastrado!"));
+		Assert.assertTrue(page.obterNomeCadastro().endsWith("Marcondes"));
+		Assert.assertEquals("Sobrenome: Santos", page.obterSobrenomeCadastro());
+		Assert.assertEquals("Sexo: Masculino", page.obterSexoCadastro());
+		Assert.assertEquals("Comida: Pizza", page.obterComidaCadastro());
+		Assert.assertEquals("Escolaridade: superior", page.obterEscolaridadeCadastro());
+		Assert.assertEquals("Esportes: Futebol", page.obterEsportesCadastro());
+	}
 }

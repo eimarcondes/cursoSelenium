@@ -52,16 +52,8 @@ public class TesteAlert {
 	public void DeveInteragirComPrompt() {
 		dsl.clicarBotao("prompt");
 		Assert.assertEquals("Digite um numero", dsl.alertaObterTexto());
-		dsl.alertaEscrever("12");
-		
-		driver.findElement(By.id("prompt")).click();
-		Alert alerta = driver.switchTo().alert();
-		Assert.assertEquals("Digite um numero", alerta.getText());
-		alerta.sendKeys("Marcondes");
-		alerta.accept();
-		Assert.assertEquals("Era Marcondes?", alerta.getText());
-		alerta.accept();
-		Assert.assertEquals(":D", alerta.getText());
-		alerta.accept();
+		dsl.alertaEscrever("Marcondes");
+		Assert.assertEquals("Era Marcondes?", dsl.alertaObterTextoEAceita());
+		Assert.assertEquals(":D", dsl.alertaObterTextoEAceita());
 	}
 }

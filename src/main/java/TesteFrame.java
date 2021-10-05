@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class TesteFrame {
@@ -36,4 +37,14 @@ public class TesteFrame {
 		dsl.escrever("elementosForm:nome", msg);
 		Assert.assertEquals("Frame OK!", msg);
 		}
+	
+	@Test
+	public void deveInteragirComFramEncondido() {
+		WebElement frame = driver.findElement(By.id("frame2"));
+		dsl.executarJS("window.scrollBy(0, arguments[0])", frame.getLocation().y);
+		dsl.entrarFrame("frame2");
+		dsl.clicarBotao("frameButton");
+		String msg = dsl.alertaObterTextoEAceita();
+		Assert.assertEquals("Frame OK!", msg);
+	}
 }
