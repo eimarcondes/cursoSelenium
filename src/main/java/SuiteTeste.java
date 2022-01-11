@@ -9,7 +9,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	DesafioCadastro.class,
 	DesafioRegrasNegocio.class,
 	TesteAlert.class,
-	TesteRegrasCadastro.class
+	TesteRegrasCadastro.class,
+	TesteFrame.class
 	})
 public class SuiteTeste {
 
